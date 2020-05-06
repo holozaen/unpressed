@@ -1,0 +1,9 @@
+/* purgecss start ignore */
+@import 'tailwindcss/base';
+@import "~assets/css/_custom_base.css";
+@import 'tailwindcss/components';
+@import "~assets/css/_custom_components.css";
+/* purgecss end ignore */
+@import 'tailwindcss/utilities';
+@import "~assets/css/_custom_utilities.css";
+

@@ -1,0 +1,38 @@
+p {
+    @apply pb-3
+}
+.std a {
+    @apply text-primary-800
+}
+.std a:hover {
+    @apply text-primary-700
+}
+
+.std h2, .std h3, .std h4, .std h5 {
+    @apply pb-3 font-semibold
+}
+
+.std h2 {
+    @apply text-3xl
+}
+
+.std h3 {
+    @apply text-2xl
+}
+
+.std h4 {
+    @apply text-xl
+}
+
+.std h5 {
+    @apply text-lg
+}
+
+.std ul {
+    @apply list-outside ml-6 list-disc pb-2
+}
+
+.std ul ul {
+    @apply ml-6 pb-0
+}
+
