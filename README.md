@@ -1,13 +1,13 @@
 # Unpressed - Basic personal blog
 Quickly create a nice looking personal blog (...at least if you have basic knowledge of nuxtjs/vuejs).
 
-##Prerequisites
+## Prerequisites
 Mongodb: https://docs.mongodb.com/manual/administration/install-on-linux/
 
 Optional:
 * Redis (for session management): https://redis.io/topics/quickstart
 
-##Core Feautures
+## Core Feautures
 * Posts
 * Categories
 * Tags
