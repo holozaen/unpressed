@@ -1,4 +1,4 @@
-# unpress - Basic personal blog
+# Unpressed - Basic personal blog
 Quickly create a nice looking personal blog (...at least if you have basic knowledge of nuxtjs/vuejs).
 
 ##Prerequisites
