@@ -42,11 +42,11 @@ Now add log into the admin panel (with the credentials defined in your .dev file
 
 After adding a few posts, tags, you can enjoy your new nice looking blog.
 # FAQ
-##How to get rid of or change the sample sidebar widget
+## How to get rid of or change the sample sidebar widget
 View the nuxt components under the ./src/pages directory and update the respective vue component template accordingly. These
 nuxt page components are very simple.
 
-###Example
+### Example
 The main index template looks as follows
 ```vue
 <template>
