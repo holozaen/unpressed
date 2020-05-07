@@ -12,8 +12,9 @@ Optional:
 * Categories
 * Tags
 * Social sharing
-* Google Analytics
 * Basic sidebar widget
+* Google Analytics
+* XML sitemap
 
 (todo: paging not fully implemented at the moment...will follow soon)
 
