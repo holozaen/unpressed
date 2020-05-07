@@ -25,7 +25,7 @@ import htmlCleanerMixin from "../../mixins/htmlCleanerMixin"
 
 export default {
   name: "TagView",
-  components: {SpFeedRssViewer, Widget, PostList, LayoutSidebarRight},
+  components: {Widget, PostList, LayoutSidebarRight},
   mixins: [htmlCleanerMixin],
   head() {
     return {

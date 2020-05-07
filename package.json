@@ -15,6 +15,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development DISABLE_LOGGING=true keystone dev --port 3000",
+    "debug": "cross-env NODE_ENV=development keystone dev --port 3000",
     "build": "cross-env NODE_ENV=production keystone build",
     "start": "cross-env NODE_ENV=production keystone start --port 3000"
   },

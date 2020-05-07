@@ -22,7 +22,7 @@ const { userIsAdmin, userIsAdminOrOwner } = require('../auth/Acl')
 
 module.exports = {
   access: {
-    read: userIsAdminOrOwner,
+    read: true,
     update: userIsAdminOrOwner,
     create: userIsAdmin,
     delete: userIsAdmin,
@@ -30,7 +30,7 @@ module.exports = {
   },
   fields: {
     name: { type: Text },
-    slug: { type: Slug, from: 'name', regenerateOnUpdate: true },
+    slug: { type: Slug, from: 'name', regenerateOnUpdate: false },
     state: {
       type: Select,
       options: ['active', 'deactivated'],

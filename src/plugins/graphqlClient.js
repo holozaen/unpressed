@@ -134,6 +134,11 @@ export default (ctx, inject) => {
               name
               slug
             }
+            author {
+              id
+              name
+              slug
+            }
             image {
               path
               originalFilename

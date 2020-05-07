@@ -1,9 +1,8 @@
 const { DateTime, File, Text, Slug, Select, Relationship, Integer} = require('@keystonejs/fields');
 const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce')
-const { AuthedRelationship } = require('@keystonejs/fields-authed-relationship');
 const { atTracking } = require('@keystonejs/list-plugins');
 const { LocalFileAdapter } = require('@keystonejs/file-adapters');
-const { isUser, userIsAdminOrOwner } = require('../auth/Acl')
+const { userIsAdmin, isUser, userIsAdminOrOwner } = require('../auth/Acl')
 const sitemapGenerator = require('../sitemap/sitemapGenerator')
 const fileAdapter = new LocalFileAdapter({
   src: 'src/static/img',
@@ -36,10 +35,10 @@ module.exports = {
     title: { type: Text, isRequired: true },
     slug: { type: Slug, from: 'title', regenerateOnUpdate: false },
     state: { type: Select, options: 'draft, published, archived', defaultValue: 'draft' },
-    author: { type: AuthedRelationship, ref: 'User.posts', access: {
-        create: userIsAdminOrOwner,
+    author: { type: Relationship, ref: 'User.posts', access: {
+        create: userIsAdmin,
         update: userIsAdminOrOwner,
-      }
+      }, many: false
     },
     tags: {type: Relationship, ref: 'Tag.posts', many: true },
     categories: {type: Relationship, ref: 'Category.posts', many: true },
