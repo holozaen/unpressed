@@ -1,6 +1,9 @@
 # Unpressed - Basic personal blog
 Quickly create a nice looking personal blog (...at least if you have basic knowledge of nuxtjs/vuejs).
 
+Real world example: 
+* https://www.kommunikation-seminare.ch
+
 ## Prerequisites
 Mongodb: https://docs.mongodb.com/manual/administration/install-on-linux/
 
