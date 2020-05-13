@@ -66,7 +66,7 @@ module.exports = {
     },
     publishedAt: {
       type: DateTime,
-      format: 'MM/DD/YYYY'
+      format: 'MM/dd/yyyy'
     }
   },
   hooks: {
