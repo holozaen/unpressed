@@ -10,9 +10,7 @@
 </template>
 
 <script>
-import Widget from "./utils/Widget"
 export default {
-  name: "LayoutSidebarRight",
-  components: {Widget}
+  name: "LayoutSidebarRight"
 }
 </script>

@@ -2,12 +2,12 @@
   <div class="w-full">
     <template v-if="posts && posts.length > 0">
       <PostListItem
-          v-for="post in posts"
-          :key="post.id"
-          :post="post"
-          :show-author="showAuthor"
-          :show-categories="showCategories"
-          :show-tags="showTags"
+        v-for="post in posts"
+        :key="post.id"
+        :post="post"
+        :show-author="showAuthor"
+        :show-categories="showCategories"
+        :show-tags="showTags"
       ></PostListItem>
     </template>
     <template v-else>
@@ -22,7 +22,7 @@
 import PostListItem from "./PostListItem"
 export default {
   name: "PostList",
-  components: {PostListItem},
+  components: { PostListItem },
   props: {
     posts: {
       type: Array,

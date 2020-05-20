@@ -1,17 +1,24 @@
-const { DateTime, File, Text, Slug, Select, Relationship, Integer} = require('@keystonejs/fields');
-const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce')
-const { atTracking } = require('@keystonejs/list-plugins');
-const { LocalFileAdapter } = require('@keystonejs/file-adapters');
-const { userIsAdmin, isUser, userIsAdminOrOwner } = require('../auth/Acl')
-const sitemapGenerator = require('../sitemap/sitemapGenerator')
+const {
+  DateTime,
+  File,
+  Text,
+  Slug,
+  Select,
+  Relationship,
+  Integer
+} = require("@keystonejs/fields")
+const { Wysiwyg } = require("@keystonejs/fields-wysiwyg-tinymce")
+const { atTracking } = require("@keystonejs/list-plugins")
+const { LocalFileAdapter } = require("@keystonejs/file-adapters")
+const { userIsAdmin, isUser, userIsAdminOrOwner } = require("../auth/Acl")
+const sitemapGenerator = require("../sitemap/sitemapGenerator")
 const fileAdapter = new LocalFileAdapter({
-  src: 'src/static/img',
-  path: '/img'
-});
-
+  src: "src/static/img",
+  path: "/img"
+})
 
 function deleteImageFileFromExistingItem(item) {
-  if (item && item.hasOwnProperty('image')) {
+  if (item && item.hasOwnProperty("image")) {
     try {
       if (item.image) {
         fileAdapter.delete(item.image)
@@ -22,26 +29,33 @@ function deleteImageFileFromExistingItem(item) {
   }
 }
 
-
 module.exports = {
   access: {
     read: true,
     update: userIsAdminOrOwner,
     create: isUser,
     delete: userIsAdminOrOwner,
-    auth: false,
+    auth: false
   },
   fields: {
     title: { type: Text, isRequired: true },
-    slug: { type: Slug, from: 'title', regenerateOnUpdate: false },
-    state: { type: Select, options: 'draft, published, archived', defaultValue: 'draft' },
-    author: { type: Relationship, ref: 'User.posts', access: {
-        create: userIsAdmin,
-        update: userIsAdminOrOwner,
-      }, many: false
+    slug: { type: Slug, from: "title", regenerateOnUpdate: false },
+    state: {
+      type: Select,
+      options: "draft, published, archived",
+      defaultValue: "draft"
     },
-    tags: {type: Relationship, ref: 'Tag.posts', many: true },
-    categories: {type: Relationship, ref: 'Category.posts', many: true },
+    author: {
+      type: Relationship,
+      ref: "User.posts",
+      access: {
+        create: userIsAdmin,
+        update: userIsAdminOrOwner
+      },
+      many: false
+    },
+    tags: { type: Relationship, ref: "Tag.posts", many: true },
+    categories: { type: Relationship, ref: "Category.posts", many: true },
     excerpt: { type: Wysiwyg, height: 150 },
     content: { type: Wysiwyg, height: 400, isRequired: true },
     image: {
@@ -52,12 +66,12 @@ module.exports = {
         beforeChange: ({ existingItem }) => {
           deleteImageFileFromExistingItem(existingItem)
         }
-      },
+      }
     },
-    relatedEvent: {type: Integer, isRequired: false },
+    relatedEvent: { type: Integer, isRequired: false },
     metaTitle: {
       type: Text,
-      isRequired: false,
+      isRequired: false
     },
     metaDescription: {
       type: Text,
@@ -66,13 +80,16 @@ module.exports = {
     },
     publishedAt: {
       type: DateTime,
-      format: 'MM/dd/yyyy'
+      format: "MM/dd/yyyy"
     }
   },
   hooks: {
-    afterChange: ({ existingItem, updatedItem, actions: { query }}) => {
+    afterChange: ({ existingItem, updatedItem, actions: { query } }) => {
       sitemapGenerator.save(query, process.env.APP_URL)
-      if (updatedItem.state === 'published' && (!existingItem || existingItem.state !== updatedItem.state)) {
+      if (
+        updatedItem.state === "published" &&
+        (!existingItem || existingItem.state !== updatedItem.state)
+      ) {
         const currentDate = new Date().toISOString()
         query(
           `mutation {
@@ -80,8 +97,7 @@ module.exports = {
               id
              }
           }`
-        )
-        .catch((e) => {
+        ).catch(e => {
           console.log(e)
         })
       } else if (existingItem && existingItem.state !== updatedItem.state) {
@@ -91,23 +107,20 @@ module.exports = {
               id
              }
           }`
-        )
-        .catch((e) => {
+        ).catch(e => {
           console.log(e)
         })
       }
     },
-    afterDelete: ({ existingItem, actions: { query }}) => {
+    afterDelete: ({ existingItem, actions: { query } }) => {
       sitemapGenerator.save(query, process.env.APP_URL)
       deleteImageFileFromExistingItem(existingItem)
-    },
+    }
   },
-  plugins: [
-    atTracking()
-  ],
-  labelField: 'title',
+  plugins: [atTracking()],
+  labelField: "title",
   adminConfig: {
-    defaultSort: '-createdAt',
-    defaultColumns: 'image, author, state, relatedEvent, publishedAt'
+    defaultSort: "-createdAt",
+    defaultColumns: "image, author, state, relatedEvent, publishedAt"
   }
-};
+}

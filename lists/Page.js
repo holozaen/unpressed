@@ -1,8 +1,8 @@
-const { Integer, Text, Slug, Select} = require('@keystonejs/fields');
-const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce')
-const { atTracking } = require('@keystonejs/list-plugins');
-const sitemapGenerator = require('../sitemap/sitemapGenerator')
-const { userIsAdmin } = require('../auth/Acl')
+const { Integer, Text, Slug, Select } = require("@keystonejs/fields")
+const { Wysiwyg } = require("@keystonejs/fields-wysiwyg-tinymce")
+const { atTracking } = require("@keystonejs/list-plugins")
+const sitemapGenerator = require("../sitemap/sitemapGenerator")
+const { userIsAdmin } = require("../auth/Acl")
 
 module.exports = {
   access: {
@@ -10,17 +10,17 @@ module.exports = {
     update: userIsAdmin,
     create: userIsAdmin,
     delete: userIsAdmin,
-    auth: false,
+    auth: false
   },
   fields: {
     title: { type: Text, isRequired: true },
-    slug: { type: Slug, from: 'title', regenerateOnUpdate: false },
+    slug: { type: Slug, from: "title", regenerateOnUpdate: false },
     content: { type: Wysiwyg, isRequired: true, height: 400 },
-    menu: { type: Select, options: 'top,bottom', defaultValue: 'bottom' },
-    position: {type: Integer, isRequired: true, defaultValue: '0' },
+    menu: { type: Select, options: "top,bottom", defaultValue: "bottom" },
+    position: { type: Integer, isRequired: true, defaultValue: "0" },
     metaTitle: {
       type: Text,
-      isRequired: false,
+      isRequired: false
     },
     metaDescription: {
       type: Text,
@@ -29,19 +29,17 @@ module.exports = {
     }
   },
   hooks: {
-    afterChange: ({ actions: { query }}) => {
+    afterChange: ({ actions: { query } }) => {
       sitemapGenerator.save(query, process.env.APP_URL)
     },
-    afterDelete: ({ actions: { query }}) => {
+    afterDelete: ({ actions: { query } }) => {
       sitemapGenerator.save(query, process.env.APP_URL)
     }
   },
-  plugins: [
-    atTracking()
-  ],
-  labelField: 'title',
+  plugins: [atTracking()],
+  labelField: "title",
   adminConfig: {
-    defaultSort: 'position',
-    defaultColumns: 'menu, position'
+    defaultSort: "position",
+    defaultColumns: "menu, position"
   }
-};
+}

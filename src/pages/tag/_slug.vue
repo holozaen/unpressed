@@ -25,21 +25,29 @@ import htmlCleanerMixin from "../../mixins/htmlCleanerMixin"
 
 export default {
   name: "TagView",
-  components: {Widget, PostList, LayoutSidebarRight},
+  components: { Widget, PostList, LayoutSidebarRight },
   mixins: [htmlCleanerMixin],
   head() {
     return {
-      title: this.tag ? this.tag.metaTitle ? this.tag.metaTitle : this.tag.name : '',
+      title: this.tag
+        ? this.tag.metaTitle
+          ? this.tag.metaTitle
+          : this.tag.name
+        : "",
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.tag ? this.tag.metaDescription ? this.tag.metaDescription : this.shorten(this.stripTags(this.tag.content), 320) : ''
+          content: this.tag
+            ? this.tag.metaDescription
+              ? this.tag.metaDescription
+              : this.shorten(this.stripTags(this.tag.content), 320)
+            : ""
         }
-      ],
+      ]
     }
   },
-  async asyncData({app, params}) {
+  async asyncData({ app, params }) {
     const slug = params.slug
     try {
       return await app.$graphqlClient.fetchTagBySlug(slug)

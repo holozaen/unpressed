@@ -44,14 +44,17 @@ export default {
   },
   methods: {
     sharing(network) {
-      this.trackSocialAction(network, this.meta.title + ' - shared on ' + network)
+      this.trackSocialAction(
+        network,
+        this.meta.title + " - shared on " + network
+      )
     }
   }
 }
 </script>
 <style type="text/css">
-  .social-buttons span {
-    display: inline-block;
-    cursor: pointer;
-  }
+.social-buttons span {
+  display: inline-block;
+  cursor: pointer;
+}
 </style>

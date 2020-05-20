@@ -1,5 +1,5 @@
 export const state = () => ({
-  list: [],
+  list: []
 })
 
 export const mutations = {
@@ -9,7 +9,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetch ({ commit }) {
+  async fetch({ commit }) {
     try {
       let query = `
       query GetPages {
@@ -23,9 +23,9 @@ export const actions = {
           metaDescription
          }
       }
-    `;
-      const { data } = await this.$graphqlClient.fetch(query);
-      commit('SET_LIST_TO_STORE', data.allPages)
+    `
+      const { data } = await this.$graphqlClient.fetch(query)
+      commit("SET_LIST_TO_STORE", data.allPages)
     } catch (e) {
       console.log(e)
     }
@@ -38,12 +38,12 @@ export const getters = {
   },
   top(state) {
     return state.list.filter(page => {
-      return page.menu === 'top'
+      return page.menu === "top"
     })
   },
   bottom(state) {
     return state.list.filter(page => {
-      return page.menu === 'bottom'
+      return page.menu === "bottom"
     })
   },
   slug: state => slug => {

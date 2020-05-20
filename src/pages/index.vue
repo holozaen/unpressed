@@ -4,7 +4,7 @@
     <div slot="sidebar" class="w-full">
       <Widget>
         <template slot="title">Sample Widget</template>
-      Some content
+        Some content
       </Widget>
     </div>
   </LayoutSidebarRight>
@@ -16,8 +16,8 @@ import LayoutSidebarRight from "../components/layout/LayoutSidebarRight"
 import Widget from "../components/layout/utils/Widget"
 
 export default {
-  components: {Widget, LayoutSidebarRight, PostList},
-  layout: 'default',
+  components: { Widget, LayoutSidebarRight, PostList },
+  layout: "default",
   head: {
     title: process.env.APP_TITLE,
     meta: [
@@ -26,19 +26,19 @@ export default {
         name: "description",
         content: process.env.APP_DESCRIPTION
       }
-    ],
+    ]
   },
-  data () {
+  data() {
     return {
       posts: null
     }
   },
-  async asyncData({app}) {
+  async asyncData({ app }) {
     try {
       return await app.$graphqlClient.fetchPosts()
     } catch (e) {
       console.log(e)
     }
   }
-};
+}
 </script>

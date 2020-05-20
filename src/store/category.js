@@ -14,7 +14,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async fetchNavigation ({ commit }) {
+  async fetchNavigation({ commit }) {
     let query = `
       query GetCategories {
         allCategories(orderBy: "position_ASC") {
@@ -26,9 +26,9 @@ export const actions = {
           updatedAt
          }
       }
-    `;
-    const { data } = await this.$graphqlClient.fetch(query);
-    commit('SET_NAVIGATION_TO_STORE', data.allCategories)
+    `
+    const { data } = await this.$graphqlClient.fetch(query)
+    commit("SET_NAVIGATION_TO_STORE", data.allCategories)
   }
 }
 

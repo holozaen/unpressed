@@ -1,5 +1,7 @@
 <template>
-  <nuxt-link :to="target" :title="title" class="uppercase px-3"><slot></slot></nuxt-link>
+  <nuxt-link :to="target" :title="title" class="uppercase px-3">
+    <slot></slot>
+  </nuxt-link>
 </template>
 
 <script>

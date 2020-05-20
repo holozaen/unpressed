@@ -1,9 +1,9 @@
-const { theme } = require ('../src/tailwind.config.js')
+const { theme } = require("../src/tailwind.config.js")
 
 module.exports = {
   loading: {
     color: theme.extend.colors.primary[500],
-    height: '5px'
+    height: "5px"
   },
   head: {
     title: process.env.APP_TITLE,
@@ -33,15 +33,12 @@ module.exports = {
     APP_URL: process.env.APP_URL,
     GOOGLE_ANALYTICS_ID: process.env.GOOGLE_ANALYTICS_ID
   },
-  srcDir: 'src',
-  buildDir: 'dist',
+  srcDir: "src",
+  buildDir: "dist",
   axios: {
     baseURL: process.env.APP_URL
   },
-  buildModules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/google-analytics',
-  ],
+  buildModules: ["@nuxtjs/tailwindcss", "@nuxtjs/google-analytics"],
   tailwindcss: {
     exposeConfig: true
   },
@@ -49,7 +46,7 @@ module.exports = {
     id: process.env.GOOGLE_ANALYTICS_ID
   },
   modules: [
-    'nuxt-webfontloader',
+    "nuxt-webfontloader",
     [
       "nuxt-fontawesome",
       {
@@ -57,12 +54,7 @@ module.exports = {
           //import whole set
           {
             set: "@fortawesome/free-solid-svg-icons",
-            icons: [
-              "faArrowRight",
-              "faCalendar",
-              "faEnvelope",
-              "faBan"
-            ]
+            icons: ["faArrowRight", "faCalendar", "faEnvelope", "faBan"]
           },
           {
             set: "@fortawesome/free-brands-svg-icons",
@@ -75,11 +67,21 @@ module.exports = {
   ],
   webfontloader: {
     google: {
-      families: ['Karla:400,700&display=swap'] //Loads Lato font with weights 400 and 700
+      families: ["Karla:400,700&display=swap"] //Loads Lato font with weights 400 and 700
     }
   },
   purgeCSS: {
-    whitelistPatterns: [/(^|\.)fa-/, /-fa($|\.)/, /bg-(.*?)-800/, /text-(.*?)-700/, /-m-([0-9]{1,2})/, /p-([0-9]{1,2})/, /pb-([0-9]{1,2})/, /mb-([0-9]{1,2})/, /italic/]
+    whitelistPatterns: [
+      /(^|\.)fa-/,
+      /-fa($|\.)/,
+      /bg-(.*?)-800/,
+      /text-(.*?)-700/,
+      /-m-([0-9]{1,2})/,
+      /p-([0-9]{1,2})/,
+      /pb-([0-9]{1,2})/,
+      /mb-([0-9]{1,2})/,
+      /italic/
+    ]
   },
   build: {
     extractCSS: true,
@@ -87,18 +89,18 @@ module.exports = {
       presets() {
         return [
           [
-            '@nuxt/babel-preset-app',
+            "@nuxt/babel-preset-app",
             {
               useBuiltIns: "entry"
             }
           ]
         ]
-      },
+      }
     }
   },
   plugins: [
-    '~plugins/graphqlClient.js',
-    '~plugins/tracking.js',
+    "~plugins/graphqlClient.js",
+    "~plugins/tracking.js",
     { src: "~plugins/vue-social-sharing.js", ssr: false }
   ]
 }

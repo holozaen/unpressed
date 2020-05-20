@@ -1,8 +1,8 @@
-const { Text, Slug, Relationship} = require('@keystonejs/fields');
-const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce')
-const { atTracking } = require('@keystonejs/list-plugins');
-const { isUser, userIsAdminOrOwner } = require('../auth/Acl')
-const sitemapGenerator = require('../sitemap/sitemapGenerator')
+const { Text, Slug, Relationship } = require("@keystonejs/fields")
+const { Wysiwyg } = require("@keystonejs/fields-wysiwyg-tinymce")
+const { atTracking } = require("@keystonejs/list-plugins")
+const { isUser, userIsAdminOrOwner } = require("../auth/Acl")
+const sitemapGenerator = require("../sitemap/sitemapGenerator")
 
 module.exports = {
   access: {
@@ -10,17 +10,17 @@ module.exports = {
     update: userIsAdminOrOwner,
     create: isUser,
     delete: userIsAdminOrOwner,
-    auth: false,
+    auth: false
   },
-  defaultSort: '-createdAt',
+  defaultSort: "-createdAt",
   fields: {
     name: { type: Text, required: true },
-    slug: { type: Slug, from: 'name' },
-    posts: {type: Relationship, ref: 'Post.tags', many: true},
+    slug: { type: Slug, from: "name" },
+    posts: { type: Relationship, ref: "Post.tags", many: true },
     content: { type: Wysiwyg, height: 400 },
     metaTitle: {
       type: Text,
-      isRequired: false,
+      isRequired: false
     },
     metaDescription: {
       type: Text,
@@ -29,18 +29,17 @@ module.exports = {
     }
   },
   hooks: {
-    afterChange: ({ actions: { query }}) => {
+    afterChange: ({ actions: { query } }) => {
       sitemapGenerator.save(query, process.env.APP_URL)
     },
-    afterDelete: ({ actions: { query }}) => {
+    afterDelete: ({ actions: { query } }) => {
       sitemapGenerator.save(query, process.env.APP_URL)
     }
   },
-  plugins: [
-    atTracking()
-  ],
-  labelField: 'name',
+  plugins: [atTracking()],
+  labelField: "name",
   adminConfig: {
-    defaultSort: 'name',
-    defaultColumns: 'posts, content'
-  }};
+    defaultSort: "name",
+    defaultColumns: "posts, content"
+  }
+}

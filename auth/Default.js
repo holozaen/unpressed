@@ -1,10 +1,10 @@
-const { PasswordAuthStrategy } = require('@keystonejs/auth-password');
+const { PasswordAuthStrategy } = require("@keystonejs/auth-password")
 
 module.exports = {
   type: PasswordAuthStrategy,
-  list: 'User',
+  list: "User",
   config: {
-    identityField: 'email', // default: 'email'
-    secretField: 'password', // default: 'password'
-  },
-};
+    identityField: "email", // default: 'email'
+    secretField: "password" // default: 'password'
+  }
+}

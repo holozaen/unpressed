@@ -1,9 +1,25 @@
 <template>
-  <div v-if="image" :class="{'sm:m-auto w-full sm:max-w-xs': !stretch, 'w-full sm:max-w-xs sm:float-left pb-2 pr-4':float, 'sm:pt-4':!float}">
+  <div
+    v-if="image"
+    :class="{
+      'sm:m-auto w-full sm:max-w-xs': !stretch,
+      'w-full sm:max-w-xs sm:float-left pb-2 pr-4': float,
+      'sm:pt-4': !float
+    }"
+  >
     <nuxt-link :to="linkTo" v-if="linkTo">
-      <img :src="image.publicUrl" :alt="image.originalFilename" class="hover:opacity-75 w-full" />
+      <img
+        :src="image.publicUrl"
+        :alt="image.originalFilename"
+        class="hover:opacity-75 w-full"
+      />
     </nuxt-link>
-    <img v-else :src="image.publicUrl" :alt="image.originalFilename" class="hover:opacity-75 w-full" />
+    <img
+      v-else
+      :src="image.publicUrl"
+      :alt="image.originalFilename"
+      class="hover:opacity-75 w-full"
+    />
   </div>
 </template>
 

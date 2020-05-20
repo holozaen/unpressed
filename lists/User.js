@@ -1,13 +1,21 @@
-const { File, Text, Checkbox, Select, Password, Relationship, Slug} = require('@keystonejs/fields');
-const { Wysiwyg } = require('@keystonejs/fields-wysiwyg-tinymce')
-const { atTracking } = require('@keystonejs/list-plugins');
-const { LocalFileAdapter } = require('@keystonejs/file-adapters');
+const {
+  File,
+  Text,
+  Checkbox,
+  Select,
+  Password,
+  Relationship,
+  Slug
+} = require("@keystonejs/fields")
+const { Wysiwyg } = require("@keystonejs/fields-wysiwyg-tinymce")
+const { atTracking } = require("@keystonejs/list-plugins")
+const { LocalFileAdapter } = require("@keystonejs/file-adapters")
 const fileAdapter = new LocalFileAdapter({
-  src: 'src/static/img',
-  path: '/img'
-});
+  src: "src/static/img",
+  path: "/img"
+})
 function deleteImageFileFromExistingItem(item) {
-  if (item && item.hasOwnProperty('image')) {
+  if (item && item.hasOwnProperty("image")) {
     try {
       if (item.image) {
         fileAdapter.delete(item.image)
@@ -18,7 +26,7 @@ function deleteImageFileFromExistingItem(item) {
   }
 }
 
-const { userIsAdmin, userIsAdminOrOwner } = require('../auth/Acl')
+const { userIsAdmin, userIsAdminOrOwner } = require("../auth/Acl")
 
 module.exports = {
   access: {
@@ -26,29 +34,29 @@ module.exports = {
     update: userIsAdminOrOwner,
     create: userIsAdmin,
     delete: userIsAdmin,
-    auth: true,
+    auth: true
   },
   fields: {
     name: { type: Text },
-    slug: { type: Slug, from: 'name', regenerateOnUpdate: false },
+    slug: { type: Slug, from: "name", regenerateOnUpdate: false },
     state: {
       type: Select,
-      options: ['active', 'deactivated'],
-      defaultValue: 'active',
+      options: ["active", "deactivated"],
+      defaultValue: "active"
     },
     isAdmin: {
       type: Checkbox,
       defaultValue: false,
       access: {
-        update: userIsAdmin,
-      },
+        update: userIsAdmin
+      }
     },
     email: {
       type: Text,
       // 2. Only authenticated users can read/update their own email, not any other user's.
       // Admins can read/update anyone's email.
       access: ({ existingItem, authentication: { item } }) => {
-        return item.isAdmin || existingItem.id === item.id;
+        return item.isAdmin || existingItem.id === item.id
       },
       isUnique: true
     },
@@ -59,9 +67,9 @@ module.exports = {
         read: ({ authentication }) => authentication.item.isAdmin,
         // 4. Only authenticated users can update their own password. Admins can update anyone's password.
         update: ({ existingItem, authentication: { item } }) => {
-          return item.isAdmin || existingItem.id === item.id;
-        },
-      },
+          return item.isAdmin || existingItem.id === item.id
+        }
+      }
     },
     content: { type: Wysiwyg, height: 400, isRequired: false },
     image: {
@@ -71,22 +79,20 @@ module.exports = {
       hooks: {
         beforeChange: ({ existingItem }) => {
           deleteImageFileFromExistingItem(existingItem)
-        },
-      },
+        }
+      }
     },
-    posts: {type: Relationship, ref: 'Post.author', many: true}
+    posts: { type: Relationship, ref: "Post.author", many: true }
   },
   hooks: {
     afterDelete: ({ existingItem }) => {
       deleteImageFileFromExistingItem(existingItem)
-    },
+    }
   },
-  plugins: [
-    atTracking()
-  ],
-  labelField: 'name',
+  plugins: [atTracking()],
+  labelField: "name",
   adminConfig: {
-    defaultSort: 'name',
-    defaultColumns: 'image, email, state'
+    defaultSort: "name",
+    defaultColumns: "image, email, state"
   }
-};
+}
