@@ -1,6 +1,7 @@
 const { theme } = require("../src/tailwind.config.js")
 
 module.exports = {
+  telemetry: false,
   loading: {
     color: theme.extend.colors.primary[500],
     height: "5px"
