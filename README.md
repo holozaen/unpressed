@@ -42,7 +42,7 @@ npm run dev
 ```
 If successful, you will be provided with direct links to frontend and backend of your blog directly in the
 terminal window.
-Now add log into the admin panel (with the credentials defined in your .dev file) and **immediately change your password**.
+Now add log into the admin panel (with the credentials defined in your .env file) and **immediately change your password**.
 
 After adding a few posts, tags, you can enjoy your new nice looking blog.
 # FAQ
