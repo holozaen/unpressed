@@ -7,7 +7,7 @@
       </div>
     </div>
 
-    <PostList :posts="tag.posts" v-if="tag.posts"></PostList>
+    <PostList :posts="tag.posts" v-if="tag.posts" :posts-meta="meta"></PostList>
     <div slot="sidebar" class="w-full">
       <Widget>
         <template slot="title">Sample Widget</template>
@@ -47,10 +47,10 @@ export default {
       ]
     }
   },
-  async asyncData({ app, params }) {
+  async asyncData({ app, params, query }) {
     const slug = params.slug
     try {
-      return await app.$graphqlClient.fetchTagBySlug(slug)
+      return await app.$graphqlClient.fetchTagBySlug(slug, query)
     } catch (e) {
       console.log(e)
     }

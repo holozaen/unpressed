@@ -1,6 +1,6 @@
 <template>
   <LayoutSidebarRight>
-    <PostList v-if="posts" :posts="posts"></PostList>
+    <PostList v-if="posts" :posts="posts" :posts-meta="meta"></PostList>
     <div slot="sidebar" class="w-full">
       <Widget>
         <template slot="title">Sample Widget</template>
@@ -33,9 +33,9 @@ export default {
       posts: null
     }
   },
-  async asyncData({ app }) {
+  async asyncData({ app, query }) {
     try {
-      return await app.$graphqlClient.fetchPosts()
+      return await app.$graphqlClient.fetchPosts(query)
     } catch (e) {
       console.log(e)
     }

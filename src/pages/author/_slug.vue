@@ -17,7 +17,11 @@
       </div>
     </section>
     <section class="w-full">
-      <PostList :posts="user.posts" v-if="user.posts"></PostList>
+      <PostList
+        :posts="user.posts"
+        v-if="user.posts"
+        :posts-meta="meta"
+      ></PostList>
     </section>
     <div slot="sidebar" class="w-full">
       <Widget>
@@ -51,10 +55,10 @@ export default {
       ]
     }
   },
-  async asyncData({ app, params }) {
+  async asyncData({ app, params, query }) {
     const slug = params.slug
     try {
-      return await app.$graphqlClient.fetchUserBySlug(slug)
+      return await app.$graphqlClient.fetchUserBySlug(slug, query)
     } catch (e) {
       console.log(e)
     }

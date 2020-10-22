@@ -1,5 +1,6 @@
 const { LocalFileAdapter } = require("@keystonejs/file-adapters")
 const { Readable } = require("stream")
+const { gql } = require("apollo-server-express")
 
 const fileAdapter = new LocalFileAdapter({
   src: "src/static",
@@ -11,38 +12,45 @@ let baseUrl = ""
 let stream = ""
 
 const generator = {
-  save: async function(query, base) {
+  save: async function(context, base) {
     try {
-      const { data } = await query(
-        `query {
-          allPages {
-            slug
-            updatedAt
+      const { data, errors } = await context.executeGraphQL({
+        context,
+        query: gql`
+          query {
+            allPages {
+              slug
+              updatedAt
+            }
+            allPosts(where: { state: published }) {
+              slug
+              updatedAt
+            }
+            allCategories {
+              slug
+              updatedAt
+            }
+            allTags {
+              slug
+              updatedAt
+            }
           }
-          allPosts(where: {state: published}) {
-            slug
-            updatedAt
-          }
-          allCategories {
-            slug
-            updatedAt
-          }
-          allTags {
-            slug
-            updatedAt
-          }
-        }`
-      )
-      baseUrl = base
-      this.addHeader()
-      this.addIndex()
-      this.addPages(data.allPages)
-      this.addPosts(data.allPosts)
-      this.addCategories(data.allCategories)
-      this.addTags(data.allTags)
-      this.addFooter()
-      const readable = Readable.from(stream)
-      await fileAdapter.save({ stream: readable, filename: "sitemap.xml" })
+        `
+      })
+      if (errors) {
+        console.log(errors)
+      } else {
+        baseUrl = base
+        this.addHeader()
+        this.addIndex()
+        this.addPages(data.allPages)
+        this.addPosts(data.allPosts)
+        this.addCategories(data.allCategories)
+        this.addTags(data.allTags)
+        this.addFooter()
+        const readable = Readable.from(stream)
+        await fileAdapter.save({ stream: readable, filename: "sitemap.xml" })
+      }
     } catch (e) {
       console.log(e)
     }

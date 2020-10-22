@@ -8,6 +8,7 @@
       :posts="category.posts"
       v-if="category.posts"
       :show-categories="false"
+      :posts-meta="meta"
     ></PostList>
     <div slot="sidebar" class="w-full">
       <Widget>
@@ -47,10 +48,10 @@ export default {
       ]
     }
   },
-  async asyncData({ app, params }) {
+  async asyncData({ app, params, query }) {
     const slug = params.slug
     try {
-      return await app.$graphqlClient.fetchCategoryBySlug(slug)
+      return await app.$graphqlClient.fetchCategoryBySlug(slug, query)
     } catch (e) {
       console.log(e)
     }

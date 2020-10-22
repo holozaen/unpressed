@@ -1,11 +1,11 @@
 const {
+  Checkbox,
   DateTime,
   File,
   Text,
   Slug,
   Select,
-  Relationship,
-  Integer
+  Relationship
 } = require("@keystonejs/fields")
 const { Wysiwyg } = require("@keystonejs/fields-wysiwyg-tinymce")
 const { atTracking } = require("@keystonejs/list-plugins")
@@ -16,9 +16,10 @@ const fileAdapter = new LocalFileAdapter({
   src: "src/static/img",
   path: "/img"
 })
+const { gql } = require("apollo-server-express")
 
 function deleteImageFileFromExistingItem(item) {
-  if (item && item.hasOwnProperty("image")) {
+  if (item && Object.prototype.hasOwnProperty.call(item, "image")) {
     try {
       if (item.image) {
         fileAdapter.delete(item.image)
@@ -29,7 +30,7 @@ function deleteImageFileFromExistingItem(item) {
   }
 }
 
-module.exports = {
+let list = {
   access: {
     read: true,
     update: userIsAdminOrOwner,
@@ -68,7 +69,6 @@ module.exports = {
         }
       }
     },
-    relatedEvent: { type: Integer, isRequired: false },
     metaTitle: {
       type: Text,
       isRequired: false
@@ -84,36 +84,42 @@ module.exports = {
     }
   },
   hooks: {
-    afterChange: ({ existingItem, updatedItem, actions: { query } }) => {
-      sitemapGenerator.save(query, process.env.APP_URL)
+    afterChange: ({ existingItem, updatedItem, context }) => {
+      sitemapGenerator.save(context, process.env.APP_URL)
       if (
         updatedItem.state === "published" &&
         (!existingItem || existingItem.state !== updatedItem.state)
       ) {
         const currentDate = new Date().toISOString()
-        query(
-          `mutation {
+        context
+          .executeGraphQL({
+            context,
+            query: gql`mutation {
             updatePost(id: "${updatedItem.id}", data: { publishedAt: "${currentDate}"}) {
               id
              }
           }`
-        ).catch(e => {
-          console.log(e)
-        })
+          })
+          .catch(e => {
+            console.log(e)
+          })
       } else if (existingItem && existingItem.state !== updatedItem.state) {
-        query(
-          `mutation {
+        context
+          .executeGraphQL({
+            context,
+            query: gql`mutation {
             updatePost(id: "${updatedItem.id}", data: { publishedAt: null}) {
               id
              }
           }`
-        ).catch(e => {
-          console.log(e)
-        })
+          })
+          .catch(e => {
+            console.log(e)
+          })
       }
     },
-    afterDelete: ({ existingItem, actions: { query } }) => {
-      sitemapGenerator.save(query, process.env.APP_URL)
+    afterDelete: ({ existingItem, context }) => {
+      sitemapGenerator.save(context, process.env.APP_URL)
       deleteImageFileFromExistingItem(existingItem)
     }
   },
@@ -121,6 +127,21 @@ module.exports = {
   labelField: "title",
   adminConfig: {
     defaultSort: "-createdAt",
-    defaultColumns: "image, author, state, relatedEvent, publishedAt"
+    defaultColumns: "image, author, state, publishedAt"
   }
 }
+
+if (
+  process.env.POSTS_ENABLE_COMMENTS !== "" &&
+  process.env.POSTS_ENABLE_COMMENTS !== "false"
+) {
+  list.fields.comments = { type: Relationship, ref: "Comment.post", many: true }
+  list.fields.commentable = {
+    type: Checkbox,
+    defaultValue:
+      process.env.POSTS_DEFAULT_COMMENTABLE !== "" &&
+      process.env.POSTS_DEFAULT_COMMENTABLE !== false
+  }
+}
+
+module.exports = list

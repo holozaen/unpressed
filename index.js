@@ -17,6 +17,7 @@ const UserSchema = require("./lists/User")
 const PostSchema = require("./lists/Post")
 const TagSchema = require("./lists/Tag")
 const CategorySchema = require("./lists/Category")
+const CommentSchema = require("./lists/Comment")
 
 const DefaultAuthStrategy = require("./auth/Default.js")
 const UserSeeder = require("./lists/seed/User")
@@ -52,6 +53,12 @@ keystone.createList("User", UserSchema)
 keystone.createList("Post", PostSchema)
 keystone.createList("Tag", TagSchema)
 keystone.createList("Category", CategorySchema)
+if (
+  process.env.POSTS_ENABLE_COMMENTS !== "" &&
+  process.env.POSTS_ENABLE_COMMENTS !== "false"
+) {
+  keystone.createList("Comment", CommentSchema)
+}
 
 const authStrategy = keystone.createAuthStrategy(DefaultAuthStrategy)
 

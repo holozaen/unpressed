@@ -29,11 +29,11 @@ module.exports = {
     }
   },
   hooks: {
-    afterChange: ({ actions: { query } }) => {
-      sitemapGenerator.save(query, process.env.APP_URL)
+    afterChange: ({ context }) => {
+      sitemapGenerator.save(context, process.env.APP_URL)
     },
-    afterDelete: ({ actions: { query } }) => {
-      sitemapGenerator.save(query, process.env.APP_URL)
+    afterDelete: ({ context }) => {
+      sitemapGenerator.save(context, process.env.APP_URL)
     }
   },
   plugins: [atTracking()],

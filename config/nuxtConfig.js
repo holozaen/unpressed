@@ -44,7 +44,11 @@ module.exports = {
     exposeConfig: true
   },
   googleAnalytics: {
-    id: process.env.GOOGLE_ANALYTICS_ID
+    id: process.env.GOOGLE_ANALYTICS_ID,
+    debug: {
+      enabled: false,
+      sendHitTask: false
+    }
   },
   modules: [
     "nuxt-webfontloader",
@@ -64,7 +68,8 @@ module.exports = {
         ]
       }
     ],
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    "vue-social-sharing/nuxt"
   ],
   webfontloader: {
     google: {
@@ -99,9 +104,5 @@ module.exports = {
       }
     }
   },
-  plugins: [
-    "~plugins/graphqlClient.js",
-    "~plugins/tracking.js",
-    { src: "~plugins/vue-social-sharing.js", ssr: false }
-  ]
+  plugins: ["~plugins/graphqlClient.js", "~plugins/tracking.js"]
 }

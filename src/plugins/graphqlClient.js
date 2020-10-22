@@ -3,9 +3,15 @@ import { getPagination } from "../assets/js/paginationCalculator"
 
 function getOptionString({
   page = 1,
-  pageSize = 10,
-  order = "DESC",
-  sortBy = "createdAt",
+  pageSize = process.env.POSTS_DEFAULT_PAGESIZE
+    ? parseInt(process.env.POSTS_DEFAULT_PAGESIZE)
+    : 10,
+  order = process.env.POSTS_DEFAULT_ORDER
+    ? process.env.POSTS_DEFAULT_ORDER
+    : "DESC",
+  sortBy = process.env.POSTS_DEFAULT_SORTBY
+    ? process.env.POSTS_DEFAULT_SORTBY
+    : "createdAt",
   filters = [],
   onlyPublished = true
 }) {
@@ -49,9 +55,15 @@ export default (ctx, inject) => {
     },
     fetchPosts: async function({
       page = 1,
-      pageSize = 10,
-      order = "DESC",
-      sortBy = "createdAt",
+      pageSize = process.env.POSTS_DEFAULT_PAGESIZE
+        ? parseInt(process.env.POSTS_DEFAULT_PAGESIZE)
+        : 10,
+      order = process.env.POSTS_DEFAULT_ORDER
+        ? process.env.POSTS_DEFAULT_ORDER
+        : "DESC",
+      sortBy = process.env.POSTS_DEFAULT_SORTBY
+        ? process.env.POSTS_DEFAULT_SORTBY
+        : "createdAt",
       filters = [],
       onlyPublished = true
     } = {}) {
@@ -65,8 +77,8 @@ export default (ctx, inject) => {
           slug
           title
           excerpt
+          commentable
           content
-          relatedEvent
           publishedAt
           author {
             id
@@ -115,9 +127,15 @@ export default (ctx, inject) => {
       slug,
       {
         page = 1,
-        pageSize = 10,
-        order = "DESC",
-        sortBy = "createdAt",
+        pageSize = process.env.POSTS_DEFAULT_PAGESIZE
+          ? parseInt(process.env.POSTS_DEFAULT_PAGESIZE)
+          : 10,
+        order = process.env.POSTS_DEFAULT_ORDER
+          ? process.env.POSTS_DEFAULT_ORDER
+          : "DESC",
+        sortBy = process.env.POSTS_DEFAULT_SORTBY
+          ? process.env.POSTS_DEFAULT_SORTBY
+          : "createdAt",
         filters = [],
         onlyPublished = true
       } = {}
@@ -140,7 +158,7 @@ export default (ctx, inject) => {
             title
             excerpt
             content
-            relatedEvent
+            commentable
             publishedAt
             author {
               id
@@ -174,6 +192,8 @@ export default (ctx, inject) => {
         }
       }`
       const { data } = await this.fetch(query)
+      console.log(query)
+      console.log(data)
       const allCategories = data.allCategories
       if (!Array.isArray(allCategories) || allCategories.length === 0) {
         throw "not found"
@@ -195,9 +215,15 @@ export default (ctx, inject) => {
       slug,
       {
         page = 1,
-        pageSize = 10,
-        order = "DESC",
-        sortBy = "createdAt",
+        pageSize = process.env.POSTS_DEFAULT_PAGESIZE
+          ? parseInt(process.env.POSTS_DEFAULT_PAGESIZE)
+          : 10,
+        order = process.env.POSTS_DEFAULT_ORDER
+          ? process.env.POSTS_DEFAULT_ORDER
+          : "DESC",
+        sortBy = process.env.POSTS_DEFAULT_SORTBY
+          ? process.env.POSTS_DEFAULT_SORTBY
+          : "createdAt",
         filters = [],
         onlyPublished = true
       } = {}
@@ -219,8 +245,8 @@ export default (ctx, inject) => {
             slug
             title
             excerpt
+            commentable
             content
-            relatedEvent
             publishedAt
             author {
               id
@@ -270,9 +296,15 @@ export default (ctx, inject) => {
       slug,
       {
         page = 1,
-        pageSize = 10,
-        order = "DESC",
-        sortBy = "createdAt",
+        pageSize = process.env.POSTS_DEFAULT_PAGESIZE
+          ? parseInt(process.env.POSTS_DEFAULT_PAGESIZE)
+          : 10,
+        order = process.env.POSTS_DEFAULT_ORDER
+          ? process.env.POSTS_DEFAULT_ORDER
+          : "DESC",
+        sortBy = process.env.POSTS_DEFAULT_SORTBY
+          ? process.env.POSTS_DEFAULT_SORTBY
+          : "createdAt",
         filters = [],
         onlyPublished = true
       } = {}
@@ -296,8 +328,8 @@ export default (ctx, inject) => {
               slug
               title
               excerpt
+              commentable
               content
-              relatedEvent
               publishedAt
               author {
                 id
@@ -343,16 +375,21 @@ export default (ctx, inject) => {
         }
       }
     },
-    fetchPostBySlug: async function(slug) {
+    fetchPostBySlug: async function(slug, onlyIfActive = true) {
+      let filterString = `where: {slug: "${slug}"`
+      if (onlyIfActive) {
+        filterString += `, state_in: published`
+      }
+      filterString += `}`
       let query = `
         query getPost {
-          allPosts(where: {slug: "${slug}"}) {
+          allPosts(${filterString}) {
             id
             slug
             title
             excerpt
+            commentable
             content
-            relatedEvent
             publishedAt
             author {
               id
@@ -373,6 +410,10 @@ export default (ctx, inject) => {
               id
               name
               slug
+            }
+            comments(where: {state: published}) {
+              createdAt
+              content
             }
           }
         }`

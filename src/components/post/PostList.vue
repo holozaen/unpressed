@@ -9,6 +9,11 @@
         :show-categories="showCategories"
         :show-tags="showTags"
       ></PostListItem>
+      <Pagination
+        :pagination="postsMeta.pagination"
+        :order="postsMeta.order"
+        :sort-by="postsMeta.sortBy"
+      ></Pagination>
     </template>
     <template v-else>
       <article class="flex flex-col shadow my-4">
@@ -20,13 +25,18 @@
 
 <script>
 import PostListItem from "./PostListItem"
+import Pagination from "../Utilities/Pagination"
 export default {
   name: "PostList",
-  components: { PostListItem },
+  components: { Pagination, PostListItem },
   props: {
     posts: {
       type: Array,
       required: false
+    },
+    postsMeta: {
+      type: Object,
+      required: true
     },
     showTags: {
       type: Boolean,

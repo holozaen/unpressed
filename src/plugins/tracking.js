@@ -27,16 +27,6 @@ const tracking = {
         })
       }
     },
-    trackCartAction(action, label, value = 0) {
-      if (this.$store.getters["analytics/trackingEnabled"]) {
-        this.$ga.event({
-          eventCategory: "cart",
-          eventAction: action,
-          eventLabel: label,
-          eventValue: value
-        })
-      }
-    },
     trackSocialAction(network, label, value = 0) {
       if (this.$store.getters["analytics/trackingEnabled"]) {
         this.$ga.event({
