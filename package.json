@@ -52,7 +52,7 @@
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "nuxt": "^2.14.7",
+    "nuxt": "^3.4.3",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-webfontloader": "^1.1.0",
     "portal-vue": "^2.1.7",
